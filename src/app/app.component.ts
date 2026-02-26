@@ -1,38 +1,22 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, type OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DevToolsPanelComponent } from './shared/components/devtools-panel/devtools-panel.component';
-import { ErrorModalComponent } from './shared/components/error-modal/error-modal.component';
-import { ErrorHandlerService } from './shared/services/error-handler.service';
+import { DemoComponent } from './demo/demo.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ErrorModalComponent, DevToolsPanelComponent],
+  imports: [RouterOutlet, DemoComponent],
   template: `
-    <router-outlet></router-outlet>
-    <app-error-modal></app-error-modal>
-    <app-devtools-panel></app-devtools-panel>
+    <app-demo></app-demo>
   `,
   styles: [
     `
-    /* App container - full width */
     :host {
       display: block;
       min-height: 100vh;
+      background: #f5f5f5;
     }
   `,
   ],
 })
-export class AppComponent implements OnInit {
-  private readonly errorHandler = inject(ErrorHandlerService);
-
-  title = 'angular-rsbuild-demo';
-
-  ngOnInit(): void {
-    // Log app initialization
-    this.errorHandler.info('Application initialized', {
-      component: 'AppComponent',
-    });
-  }
-}
+export class AppComponent {}

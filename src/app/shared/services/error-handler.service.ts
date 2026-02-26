@@ -1,4 +1,4 @@
-import { type ErrorHandler, Injectable } from '@angular/core';
+import { type ErrorHandler, Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 export interface ErrorInfo {
@@ -181,5 +181,19 @@ export class ErrorModalService {
   close(): void {
     this.isOpen = false;
     this.currentErrorSubject.next(null);
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AngularErrorHandler implements ErrorHandler {
+  private handler: ErrorHandlerService | null = null;
+
+  handleError(error: unknown): void {
+    if (!this.handler) {
+      this.handler = inject(ErrorHandlerService);
+    }
+    this.handler.handleError(error);
   }
 }

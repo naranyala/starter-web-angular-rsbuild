@@ -153,7 +153,7 @@ export class DevToolsService {
 
   // Check if production mode
   isProductionMode(): boolean {
-    return typeof ng === 'undefined' || !ng.probe;
+    return true;
   }
 
   // Get errors

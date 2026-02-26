@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ErrorHandlerService } from '../shared/services/error-handler.service';
 
 interface CardItem {
   title: string;
@@ -20,16 +19,6 @@ interface CardItem {
     <div class="demo-container">
       <h1>Technology Cards</h1>
       <p class="subtitle">Explore the technologies powering this demo</p>
-
-      <!-- Test Error Button -->
-      <div class="test-error-section">
-        <button type="button" class="test-error-btn" (click)="triggerError()">
-          🐛 Test Error Modal
-        </button>
-        <button type="button" class="test-error-btn warning" (click)="triggerWarning()">
-          ⚠️ Test Warning
-        </button>
-      </div>
 
       <div class="search-container">
         <input
@@ -228,46 +217,6 @@ interface CardItem {
         font-size: 1.25rem;
       }
     }
-
-    /* Test Error Section */
-    .test-error-section {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    .test-error-btn {
-      padding: 10px 20px;
-      border: 2px solid #e0e0e0;
-      border-radius: 8px;
-      background: #fff;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .test-error-btn:hover {
-      background: #f5f5f5;
-      border-color: #0f3460;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .test-error-btn.warning {
-      border-color: #f59e0b;
-      background: #fffbeb;
-    }
-
-    .test-error-btn.warning:hover {
-      background: #fef3c7;
-      border-color: #d97706;
-    }
   `,
   ],
 })
@@ -436,25 +385,9 @@ await esbuild.build({
     });
   }
 
-  private readonly errorHandler = inject(ErrorHandlerService);
-
   private _escapeHtml(text: string): string {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
-  }
-
-  triggerError(): void {
-    // Trigger an error that will show the modal
-    this.errorHandler.handleError(
-      new Error('This is a test error! The error modal should be showing now.')
-    );
-  }
-
-  triggerWarning(): void {
-    // Trigger a warning (logged but no modal)
-    this.errorHandler.warn('This is a test warning. Check the DevTools error tab.', {
-      component: 'DemoComponent',
-    });
   }
 }

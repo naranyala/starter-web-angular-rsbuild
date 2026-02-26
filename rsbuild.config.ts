@@ -16,8 +16,8 @@ export default defineConfig({
     include: [/src/],
     define: {
       // Required for Angular to work properly
-      ngDevMode: 'undefined',
-      ngJitMode: 'true',
+      ngDevMode: 'false',
+      ngJitMode: 'undefined',
     },
   },
   output: {

@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, type OnInit, signal } from '@angular/core';
+import { Component, type OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  type AppState,
+import type {
+  AppState,
   DevToolsService,
-  type MemoryInfo,
-  type PerformanceMetrics,
-  type RouteInfo,
+  MemoryInfo,
+  PerformanceMetrics,
+  RouteInfo,
 } from '../../services/devtools.service';
-import { ErrorHandlerService } from '../../services/error-handler.service';
+import type { ErrorHandlerService } from '../../services/error-handler.service';
 
 interface TabConfig {
   id: string;
@@ -26,10 +26,10 @@ interface TabConfig {
     <button
       class="devtools-toggle"
       (click)="togglePanel()"
-      [class.active]="panelOpen()"
+      [class.active]="panelOpenState"
       title="Toggle DevTools (Ctrl+Shift+D)"
     >
-      <span class="toggle-icon">{{ panelOpen() ? '▼' : '▲' }}</span>
+      <span class="toggle-icon">{{ panelOpenState ? '▼' : '▲' }}</span>
       <span class="toggle-label">DevTools</span>
       @if (errorCount() > 0) {
         <span class="error-badge">{{ errorCount() }}</span>
@@ -37,7 +37,7 @@ interface TabConfig {
     </button>
 
     <!-- DevTools Panel -->
-    @if (panelOpen()) {
+    @if (panelOpenState) {
       <div class="devtools-panel" [style.height.px]="panelHeight()">
         <!-- Panel Header -->
         <div class="panel-header">
@@ -79,7 +79,7 @@ interface TabConfig {
             <button
               type="button"
               class="tab-btn"
-              [class.active]="activeTab() === tab.id"
+              [class.active]="currentTabState === tab.id"
               (click)="setActiveTab(tab.id)"
             >
               <span class="tab-icon">{{ tab.icon }}</span>
@@ -94,7 +94,7 @@ interface TabConfig {
         <!-- Panel Content -->
         <div class="panel-content">
           <!-- Overview Tab -->
-          @if (activeTab() === 'overview') {
+          @if (currentTabState === 'overview') {
             <div class="tab-content overview-tab">
               <div class="info-grid">
                 <div class="info-card">
@@ -158,7 +158,7 @@ interface TabConfig {
           }
 
           <!-- Routes Tab -->
-          @if (activeTab() === 'routes') {
+          @if (currentTabState === 'routes') {
             <div class="tab-content routes-tab">
               <div class="routes-header">
                 <h3 class="section-title">📍 Route History</h3>
@@ -192,7 +192,7 @@ interface TabConfig {
           }
 
           <!-- Performance Tab -->
-          @if (activeTab() === 'performance') {
+          @if (currentTabState === 'performance') {
             <div class="tab-content performance-tab">
               @if (performanceMetrics) {
                 <div class="metrics-grid">
@@ -249,7 +249,7 @@ interface TabConfig {
           }
 
           <!-- Memory Tab -->
-          @if (activeTab() === 'memory') {
+          @if (currentTabState === 'memory') {
             <div class="tab-content memory-tab">
               @if (memoryInfo) {
                 <div class="memory-cards">
@@ -292,7 +292,7 @@ interface TabConfig {
           }
 
           <!-- Errors Tab -->
-          @if (activeTab() === 'errors') {
+          @if (currentTabState === 'errors') {
             <div class="tab-content errors-tab">
               <div class="errors-header">
                 <h3 class="section-title">⚠️ Error Log</h3>
@@ -1010,11 +1010,13 @@ interface TabConfig {
   ],
 })
 export class DevToolsPanelComponent implements OnInit {
-  private readonly devTools = inject(DevToolsService);
-  private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly devTools: DevToolsService;
+  private readonly errorHandler: ErrorHandlerService;
 
-  readonly panelOpen = this.devTools.panelOpen;
-  readonly activeTab = this.devTools.currentTab;
+  readonly panelOpen = signal(false);
+  readonly activeTab = signal<'overview' | 'routes' | 'performance' | 'memory' | 'errors'>(
+    'overview'
+  );
 
   panelHeight = signal(400);
   isResizing = false;
@@ -1053,7 +1055,10 @@ export class DevToolsPanelComponent implements OnInit {
   private resizeListener?: (e: MouseEvent) => void;
   private resizeUpListener?: (e: MouseEvent) => void;
 
-  constructor() {
+  constructor(devTools: DevToolsService, errorHandler: ErrorHandlerService) {
+    this.devTools = devTools;
+    this.errorHandler = errorHandler;
+
     // Update error count in tabs
     this.errorHandler.errors$.subscribe(() => {
       const errorTab = this.tabs.find(t => t.id === 'errors');
@@ -1065,6 +1070,14 @@ export class DevToolsPanelComponent implements OnInit {
     // Listen for online/offline events
     window.addEventListener('online', () => (this.isOnline = true));
     window.addEventListener('offline', () => (this.isOnline = false));
+  }
+
+  get panelOpenState() {
+    return this.devTools.panelOpen();
+  }
+
+  get currentTabState() {
+    return this.devTools.currentTab();
   }
 
   ngOnInit(): void {
@@ -1086,7 +1099,7 @@ export class DevToolsPanelComponent implements OnInit {
 
   togglePanel(): void {
     this.devTools.togglePanel();
-    if (this.panelOpen()) {
+    if (this.panelOpenState) {
       setTimeout(() => this.refreshData(), 100);
     }
   }
