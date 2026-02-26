@@ -1,10 +1,10 @@
 # Angular Rsbuild Starter
 
-A minimal Angular 19 application bundled with Rsbuild, running on the Bun runtime.
+A minimal Angular 21 application bundled with Rsbuild, running on the Bun runtime.
 
 ## Overview
 
-This project demonstrates Angular 19 working with Rsbuild, a modern build tool based on Rspack. It provides faster build times compared to traditional Webpack-based Angular builds.
+This project demonstrates Angular 21 working with Rsbuild, a modern build tool based on Rspack. It provides faster build times compared to traditional Webpack-based Angular builds.
 
 ## Prerequisites
 
@@ -52,11 +52,51 @@ bun run build    # Angular CLI production build
 | `bun run build:rsbuild` | Production build with Rsbuild |
 | `bun run start` | Angular CLI dev server (Webpack) |
 | `bun run build` | Angular CLI production build (Webpack) |
-| `bun run test` | Run unit tests with Karma |
+| `bun run test` | Run unit tests with Bun test |
+| `bun run test:watch` | Run tests in watch mode |
+| `bun run test:coverage` | Run tests with coverage |
 | `bun run lint` | Run Biome linter |
 | `bun run lint:fix` | Run Biome linter with auto-fix |
 | `bun run format` | Check code formatting with Biome |
 | `bun run format:fix` | Format code with Biome |
+
+## Code Quality & Linting
+
+This project uses [Biome](https://biomejs.dev/) for linting and formatting.
+
+### VSCode Integration
+
+Install the [Biome VSCode extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) for automatic formatting on save and inline linting errors.
+
+The project includes pre-configured VSCode settings (`.vscode/settings.json`) that enable:
+- Format on save
+- Auto-fix on save
+- Import organization on save
+
+### Manual Commands
+
+```bash
+# Check for lint errors
+bun run lint
+
+# Auto-fix lint errors
+bun run lint:fix
+
+# Check formatting
+bun run format
+
+# Format all files
+bun run format:fix
+```
+
+### Biome Configuration
+
+Key features of the Biome configuration (`biome.json`):
+- **TypeScript**: Full support for decorators and Angular patterns
+- **Formatting**: 2-space indentation, 100 char line width, single quotes
+- **Linting**: Recommended rules with Angular-friendly overrides
+- **Test files**: Relaxed rules for test files (`.spec.ts`, `.test.ts`)
+- **Component files**: Relaxed import type rules for `*.component.ts`
 
 ## Project Structure
 
@@ -75,6 +115,8 @@ starter-angular-rsbuild/
 ├── rsbuild.config.ts           # Rsbuild configuration
 ├── angular.json                # Angular CLI configuration
 ├── tsconfig.json               # TypeScript configuration
+├── biome.json                  # Biome lint/format config
+├── .editorconfig               # Editor configuration
 └── package.json                # Dependencies and scripts
 ```
 
@@ -93,7 +135,7 @@ The `rsbuild.config.ts` file configures the build process:
 
 ### TypeScript Configuration
 
-The project uses TypeScript 5.5 with the following key settings:
+The project uses TypeScript 5.7 with the following key settings:
 
 - Module: ES2022
 - Module resolution: bundler
@@ -111,9 +153,9 @@ Components use inline templates and styles for compatibility with Rsbuild's JIT 
 
 | Package | Version | Description |
 |---------|---------|-------------|
-| @angular/core | 19.2.x | Angular framework |
-| @angular/router | 19.2.x | Angular router |
-| @angular/forms | 19.2.x | Angular forms |
+| @angular/core | 21.1.x | Angular framework |
+| @angular/router | 21.1.x | Angular router |
+| @angular/forms | 21.1.x | Angular forms |
 | rxjs | 7.8.x | Reactive extensions |
 | zone.js | 0.15.x | Change detection |
 | winbox | 0.2.x | Window management library |
@@ -125,7 +167,7 @@ Components use inline templates and styles for compatibility with Rsbuild's JIT 
 | @rsbuild/core | 1.7.x | Build tool |
 | @rsbuild/plugin-sass | 1.5.x | SCSS support |
 | @rsbuild/plugin-css-minimizer | 1.1.x | CSS optimization |
-| typescript | 5.5.x | TypeScript compiler |
+| typescript | 5.7.x | TypeScript compiler |
 | @biomejs/biome | 2.4.x | Linter and formatter |
 
 ## Architecture Notes

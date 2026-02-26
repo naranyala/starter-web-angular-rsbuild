@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ErrorHandlerService } from '../shared/services/error-handler.service';
 
 interface CardItem {
   title: string;
   description: string;
   icon: string;
   color: string;
-  content: string;
+  codeMockup: string;
   link?: string;
 }
 
@@ -19,6 +20,16 @@ interface CardItem {
     <div class="demo-container">
       <h1>Technology Cards</h1>
       <p class="subtitle">Explore the technologies powering this demo</p>
+
+      <!-- Test Error Button -->
+      <div class="test-error-section">
+        <button type="button" class="test-error-btn" (click)="triggerError()">
+          🐛 Test Error Modal
+        </button>
+        <button type="button" class="test-error-btn warning" (click)="triggerWarning()">
+          ⚠️ Test Warning
+        </button>
+      </div>
 
       <div class="search-container">
         <input
@@ -41,7 +52,6 @@ interface CardItem {
             </div>
             <h3 class="card-title">{{ card.title }}</h3>
             <p class="card-description">{{ card.description }}</p>
-            <span class="click-hint">Click to learn more</span>
           </div>
         } @empty {
           <div class="no-results">
@@ -51,39 +61,41 @@ interface CardItem {
       </div>
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     .demo-container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 30px 20px;
     }
 
     .demo-container h1 {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: #1a1a2e;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       text-align: center;
     }
 
     .subtitle {
       text-align: center;
       color: #666;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
     }
 
     /* Search Styles */
     .search-container {
       position: relative;
-      max-width: 500px;
-      margin: 0 auto 40px;
+      max-width: 400px;
+      margin: 0 auto 24px;
     }
 
     .search-input {
       width: 100%;
-      padding: 14px 45px 14px 20px;
-      font-size: 1rem;
+      padding: 10px 36px 10px 14px;
+      font-size: 0.9rem;
       border: 2px solid #e0e0e0;
-      border-radius: 12px;
+      border-radius: 8px;
       outline: none;
       transition:
         border-color 0.2s,
@@ -98,25 +110,25 @@ interface CardItem {
 
     .search-icon {
       position: absolute;
-      right: 15px;
+      right: 12px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1.2rem;
+      font-size: 1rem;
       opacity: 0.5;
     }
 
     .clear-btn {
       position: absolute;
-      right: 45px;
+      right: 36px;
       top: 50%;
       transform: translateY(-50%);
       background: #e0e0e0;
       border: none;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.85rem;
       line-height: 1;
       color: #666;
       transition: background 0.2s;
@@ -129,30 +141,32 @@ interface CardItem {
     /* Cards Grid */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
     }
 
     .card {
       background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
       transition:
         transform 0.2s,
         box-shadow 0.2s,
         cursor 0.2s;
       animation: fadeIn 0.3s ease-out;
       cursor: pointer;
+      border: 1px solid #f0f0f0;
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      border-color: #0f3460;
     }
 
     .card:active {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     @keyframes fadeIn {
@@ -167,65 +181,95 @@ interface CardItem {
     }
 
     .card-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 16px;
+      font-size: 1.25rem;
+      margin-bottom: 10px;
     }
 
     .card-title {
-      font-size: 1.25rem;
+      font-size: 1rem;
       color: #1a1a2e;
-      margin: 0 0 12px;
+      margin: 0 0 6px;
+      font-weight: 600;
     }
 
     .card-description {
       color: #666;
-      line-height: 1.6;
+      line-height: 1.4;
       margin: 0;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     /* No Results */
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 60px 20px;
+      padding: 40px 20px;
       color: #999;
-    }
-
-    /* Click Hint */
-    .click-hint {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 4px 12px;
-      background: #f0f4ff;
-      color: #0f3460;
-      font-size: 0.85rem;
-      border-radius: 20px;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-    }
-
-    .card:hover .click-hint {
-      opacity: 1;
+      font-size: 0.9rem;
     }
 
     /* Responsive */
     @media (max-width: 600px) {
       .cards-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       }
 
       .demo-container h1 {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
       }
     }
-  `],
+
+    /* Test Error Section */
+    .test-error-section {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .test-error-btn {
+      padding: 10px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .test-error-btn:hover {
+      background: #f5f5f5;
+      border-color: #0f3460;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .test-error-btn.warning {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .test-error-btn.warning:hover {
+      background: #fef3c7;
+      border-color: #d97706;
+    }
+  `,
+  ],
 })
 export class DemoComponent {
   searchQuery = '';
@@ -233,119 +277,111 @@ export class DemoComponent {
   cards: CardItem[] = [
     {
       title: 'Angular',
-      description:
-        'A platform for building mobile and desktop web applications with TypeScript and component-based architecture.',
+      description: 'Platform for building web apps with TypeScript',
       icon: '🅰️',
       color: '#e535ab',
-      content: `
-        <h2>Angular</h2>
-        <p>Angular is a development platform, built on TypeScript, which includes:</p>
-        <ul>
-          <li>A component-based framework for building scalable web applications</li>
-          <li>A collection of well-integrated libraries that include features like routing, forms management, and client-server communication</li>
-          <li>A suite of developer tools to help you develop, build, test, and update your app</li>
-        </ul>
-        <p><strong>Version:</strong> 19.x</p>
-        <p><strong>Language:</strong> TypeScript</p>
-      `,
+      codeMockup: `import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  template: '<h1>Hello Angular!</h1>',
+})
+export class AppComponent {
+  title = 'My App';
+}`,
       link: 'https://angular.dev',
     },
     {
       title: 'Rsbuild',
-      description:
-        'A high-performance build tool based on Rspack. Offers faster builds with a simpler configuration API.',
+      description: 'High-performance build tool based on Rspack',
       icon: '⚡',
       color: '#f5a623',
-      content: `
-        <h2>Rsbuild</h2>
-        <p>Rsbuild is a high performance build tool based on Rspack. It provides:</p>
-        <ul>
-          <li>Lightning fast cold starts</li>
-          <li>Incremental compilation</li>
-          <li>Built-in support for loaders and plugins</li>
-          <li>Simpler configuration API than Rspack</li>
-        </ul>
-        <p><strong>Based on:</strong> Rspack (Rust)</p>
-        <p><strong>Speed:</strong> 10x faster than Webpack</p>
-      `,
+      codeMockup: `// rsbuild.config.ts
+import { defineConfig } from '@rsbuild/core';
+
+export default defineConfig({
+  source: {
+    entry: { index: './src/main.ts' },
+  },
+  output: {
+    distPath: { root: './dist' },
+  },
+});`,
       link: 'https://rsbuild.dev',
     },
     {
       title: 'Bun',
-      description:
-        'An all-in-one JavaScript runtime, package manager, and build tool. A faster alternative to Node.js.',
+      description: 'Fast all-in-one JavaScript runtime',
       icon: '🥟',
       color: '#fbf0df',
-      content: `
-        <h2>Bun</h2>
-        <p>Bun is an all-in-one toolkit for JavaScript and TypeScript apps:</p>
-        <ul>
-          <li>Runtime - A JavaScript runtime built on JavaScriptCore</li>
-          <li>Package Manager - A drop-in replacement for npm</li>
-          <li>Bundler - A fast bundler for JavaScript and TypeScript</li>
-          <li>Test Runner - A fast test runner with Jest-compatible API</li>
-        </ul>
-        <p><strong>Speed:</strong> 3x faster than Node.js</p>
-      `,
+      codeMockup: `// package.json scripts
+{
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "test": "bun test",
+    "build": "bun run build.ts"
+  }
+}
+
+// Run with: bun run dev`,
       link: 'https://bun.sh',
     },
     {
       title: 'TypeScript',
-      description:
-        'A typed superset of JavaScript that compiles to plain JavaScript. Adds static types to the language.',
+      description: 'Typed superset of JavaScript',
       icon: '📘',
       color: '#3178c6',
-      content: `
-        <h2>TypeScript</h2>
-        <p>TypeScript is a strongly typed programming language that builds on JavaScript:</p>
-        <ul>
-          <li>Static type checking</li>
-          <li>Enhanced IDE support</li>
-          <li>Modern JavaScript features</li>
-          <li>Compiles to clean JavaScript</li>
-        </ul>
-        <p><strong>Version:</strong> 5.x</p>
-        <p><strong>Developed by:</strong> Microsoft</p>
-      `,
+      codeMockup: `interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+function greet(user: User): string {
+  return \`Hello, \${user.name}!\`;
+}
+
+const user: User = {
+  id: 1,
+  name: 'John',
+  email: 'john@example.com',
+};`,
       link: 'https://typescriptlang.org',
     },
     {
       title: 'esbuild',
-      description:
-        'An extremely fast JavaScript bundler and minifier. Used here for compiling TypeScript.',
+      description: 'Extremely fast JS bundler',
       icon: '🚀',
       color: '#ffcf00',
-      content: `
-        <h2>esbuild</h2>
-        <p>esbuild is an extremely fast JavaScript bundler and minifier:</p>
-        <ul>
-          <li>10-100x faster than other bundlers</li>
-          <li>Written in Go</li>
-          <li>Supports TypeScript and JSX out of the box</li>
-          <li>Used by Rsbuild, Vite, Remix, and more</li>
-        </ul>
-        <p><strong>Written in:</strong> Go</p>
-        <p><strong>Speed:</strong> Up to 100x faster</p>
-      `,
+      codeMockup: `// build.js
+import * as esbuild from 'esbuild';
+
+await esbuild.build({
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  outfile: 'dist/bundle.js',
+  minify: true,
+  sourcemap: true,
+});`,
       link: 'https://esbuild.github.io',
     },
     {
       title: 'HMR',
-      description:
-        'Hot Module Replacement enables instant updates during development without page refresh.',
+      description: 'Hot Module Replacement for instant updates',
       icon: '🔥',
       color: '#ff6b6b',
-      content: `
-        <h2>Hot Module Replacement</h2>
-        <p>HMR exchanges, adds, or removes modules while an application is running:</p>
-        <ul>
-          <li>Preserve application state</li>
-          <li>Instant feedback on changes</li>
-          <li>No full page reload</li>
-          <li>Faster development cycle</li>
-        </ul>
-        <p><strong>Supported by:</strong> Angular, Rsbuild, Vite, Webpack</p>
-      `,
+      codeMockup: `// Development server with HMR
+{
+  "dev": "rsbuild dev",
+  "devServer": {
+    "hot": true,
+    "liveReload": true,
+    "port": 4200
+  }
+}
+
+// Changes reflect instantly!`,
     },
   ];
 
@@ -356,43 +392,69 @@ export class DemoComponent {
 
     const query = this.searchQuery.toLowerCase().trim();
     return this.cards.filter(
-      (card) =>
+      card =>
         card.title.toLowerCase().includes(query) || card.description.toLowerCase().includes(query)
     );
   }
 
   openCard(card: CardItem): void {
-    const WinBoxConstructor = (window as unknown as { WinBox: any }).WinBox;
-    if (!WinBoxConstructor) {
-      console.error('WinBox is not loaded. Please check if winbox.bundle.min.js is included.');
+    if (!window.WinBox) {
+      console.error('WinBox is not available');
       return;
     }
-    const _win = new WinBoxConstructor({
+    const _win = new window.WinBox({
       title: card.title,
       background: card.color,
-      width: '600px',
+      width: '700px',
       height: '500px',
       x: 'center',
       y: 'center',
       html: `
-        <div style="padding: 20px; color: #333; height: 100%; overflow: auto; background: white;">
-          ${card.content}
+        <div style="display: flex; flex-direction: column; height: 100%; background: #1e1e1e;">
+          <div style="padding: 12px 16px; background: #2d2d2d; border-bottom: 1px solid #404040;">
+            <span style="color: #858585; font-size: 0.85rem; font-family: 'Consolas', 'Monaco', monospace;">${card.title} Example</span>
+          </div>
+          <div style="flex: 1; overflow: auto; padding: 16px;">
+            <pre style="margin: 0;"><code style="font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #d4d4d4;">${this._escapeHtml(card.codeMockup)}</code></pre>
+          </div>
           ${
             card.link
               ? `
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
-              <a href="${card.link}" target="_blank" style="color: ${card.color}; text-decoration: none; font-weight: 500;">
-                Visit ${card.title} Website →
-              </a>
-            </div>
+          <div style="padding: 12px 16px; background: #2d2d2d; border-top: 1px solid #404040;">
+            <a href="${card.link}" target="_blank" style="color: #4fc3f7; text-decoration: none; font-size: 0.9rem;">
+              ${card.link} ↗
+            </a>
+          </div>
           `
               : ''
           }
         </div>
       `,
-      onfocus: function () {
+      onfocus: function (this: any) {
         this.setBackground(card.color);
       },
+    });
+  }
+
+  private readonly errorHandler = inject(ErrorHandlerService);
+
+  private _escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  triggerError(): void {
+    // Trigger an error that will show the modal
+    this.errorHandler.handleError(
+      new Error('This is a test error! The error modal should be showing now.')
+    );
+  }
+
+  triggerWarning(): void {
+    // Trigger a warning (logged but no modal)
+    this.errorHandler.warn('This is a test warning. Check the DevTools error tab.', {
+      component: 'DemoComponent',
     });
   }
 }

@@ -7,3 +7,16 @@ prefer-offline = true
 [run]
 # Use Bun's JavaScript runtime
 shell = "bun"
+
+[test]
+# Test configuration
+root = "./src"
+include = ["**/*.spec.ts"]
+exclude = ["**/node_modules/**", "**/dist/**"]
+preload = ["./src/test-setup.ts"]
+
+# Coverage configuration
+coverage = true
+coverageDir = "./coverage"
+coverageReporters = ["text", "lcov", "html"]
+coverageThreshold = { lines = 50, functions = 50, branches = 50 }

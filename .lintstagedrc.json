@@ -1,0 +1,7 @@
+{
+  "*.ts": ["biome check --write", "biome check"],
+  "*.html": ["biome check --write", "biome check"],
+  "*.css": ["biome check --write", "biome check"],
+  "*.scss": ["biome check --write", "biome check"],
+  "*.json": ["biome check --write", "biome check"]
+}

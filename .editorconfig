@@ -1,0 +1,36 @@
+# Biome configuration for Angular projects
+# https://biomejs.dev/
+
+# Enable Biome for all TypeScript, HTML, CSS, and JSON files
+[*.ts]
+linter.enabled = true
+formatter.enabled = true
+
+[*.html]
+linter.enabled = true
+formatter.enabled = true
+
+[*.css]
+linter.enabled = true
+formatter.enabled = true
+
+[*.scss]
+linter.enabled = true
+formatter.enabled = true
+
+[*.json]
+linter.enabled = true
+formatter.enabled = true
+
+# Ignore build and dependency directories
+[node_modules]
+ignore = true
+
+[dist]
+ignore = true
+
+[.angular]
+ignore = true
+
+[coverage]
+ignore = true

@@ -1,6 +1,6 @@
 import { defineConfig } from '@rsbuild/core';
-import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginCssMinimizer } from '@rsbuild/plugin-css-minimizer';
+import { pluginSass } from '@rsbuild/plugin-sass';
 
 /**
  * Rsbuild configuration for Angular with Bun runtime
@@ -14,6 +14,11 @@ export default defineConfig({
       index: './src/main.ts',
     },
     include: [/src/],
+    define: {
+      // Required for Angular to work properly
+      ngDevMode: 'undefined',
+      ngJitMode: 'true',
+    },
   },
   output: {
     distPath: {
@@ -30,6 +35,10 @@ export default defineConfig({
     copy: [
       { from: './src/favicon.ico' },
       { from: './src/assets', to: 'assets' },
+      {
+        from: './node_modules/winbox/dist/winbox.bundle.min.js',
+        to: 'winbox.bundle.min.js',
+      },
     ],
   },
   resolve: {
@@ -39,6 +48,10 @@ export default defineConfig({
     rspack: {
       optimization: {
         minimize: true,
+      },
+      // Enable Angular decorator support via TypeScript
+      experiments: {
+        css: true,
       },
     },
   },
@@ -58,8 +71,5 @@ export default defineConfig({
       strategy: 'split-by-experience',
     },
   },
-  plugins: [
-    pluginSass(),
-    pluginCssMinimizer(),
-  ],
+  plugins: [pluginSass(), pluginCssMinimizer()],
 });

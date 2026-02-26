@@ -8,11 +8,12 @@ import { RouterLink } from '@angular/router';
   template: `
     <div class="home-container">
       <h1>Angular Rsbuild Demo</h1>
-      <p class="subtitle">A minimal Angular 19 application bundled with Rsbuild</p>
+      <p class="subtitle">A minimal Angular 21 application bundled with Rsbuild</p>
       <a routerLink="/demo" class="btn">View Accordion Demo →</a>
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     .home-container {
       max-width: 800px;
       margin: 0 auto;
@@ -45,6 +46,7 @@ import { RouterLink } from '@angular/router';
     .btn:hover {
       background: #16213e;
     }
-  `],
+  `,
+  ],
 })
 export class HomeComponent {}
