@@ -15,10 +15,17 @@
     .winbox.min .wb-body::after {
       display: none !important;
     }
+    /* Ensure WinBox windows appear above the top panel */
+    .winbox {
+      z-index: 1001 !important;
+    }
+    .winbox.max, .winbox.min {
+      z-index: 1002 !important;
+    }
   </style>
 </head>
 <body>
-  <app-root></app-root>
   <script src="winbox.bundle.min.js"></script>
+  <app-root></app-root>
 </body>
 </html>

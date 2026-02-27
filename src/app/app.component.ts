@@ -1,26 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, type OnInit } from '@angular/core';
 import { DemoComponent } from './demo/demo.component';
 import { WindowTabsComponent } from './shared/components/window-tabs/window-tabs.component';
+import { WinBoxManagerService } from './shared/services/winbox-manager.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DemoComponent, WindowTabsComponent],
+  imports: [DemoComponent, WindowTabsComponent],
   template: `
     <app-window-tabs></app-window-tabs>
     <app-demo></app-demo>
   `,
-  styles: [
-    `
-    :host {
-      display: block;
-      min-height: 100vh;
-      background: #f5f5f5;
-    }
-  `,
-  ],
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  private readonly winBoxManager = inject(WinBoxManagerService);
 
-// Force refresh
+  ngOnInit(): void {
+    (window as any).__winBoxManager = this.winBoxManager;
+  }
+}

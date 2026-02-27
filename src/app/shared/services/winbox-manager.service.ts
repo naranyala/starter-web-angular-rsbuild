@@ -1,4 +1,4 @@
-import { Injectable, signal, type Signal } from '@angular/core';
+import { Injectable, type Signal, signal } from '@angular/core';
 
 export interface WindowInfo {
   id: string;
@@ -45,12 +45,7 @@ export class WinBoxManagerService {
     return `winbox-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 
-  registerWindow(options: {
-    title: string;
-    color: string;
-    instance: any;
-    icon?: string;
-  }): string {
+  registerWindow(options: { title: string; color: string; instance: any; icon?: string }): string {
     const id = this.generateId();
     const windowInfo: WindowInfo = {
       id,
@@ -77,7 +72,18 @@ export class WinBoxManagerService {
       this.closeWindow(id);
     };
 
+    // Using default WinBox styling
+    this.applyThemeClass(options.instance);
+
     return id;
+  }
+
+  private applyThemeClass(instance: any): void {
+    // Using default WinBox styling - no custom class needed
+  }
+
+  updateAllWindowsTheme(): void {
+    // Using default WinBox styling - no theme updates needed
   }
 
   createMaximizedWindow(options: {
@@ -106,13 +112,7 @@ export class WinBoxManagerService {
       y: top,
       html: options.html,
       onfocus: options.onfocus,
-      // Remove default WinBox styling for zero margin look
-      class: 'winbox-fullscreen',
     });
-
-    // Force remove any margin/padding from WinBox window
-    _win.body.style.margin = '0';
-    _win.body.style.padding = '0';
 
     const id = this.registerWindow({
       title: options.title,
@@ -129,7 +129,7 @@ export class WinBoxManagerService {
     if (windowInfo) {
       windowInfo.instance.focus();
       windowInfo.instance.show();
-      windowInfo.minimized = false;
+      windowInfo.instance.minimized = false;
 
       this.windows.update(windows =>
         windows.map(w => (w.id === id ? { ...w, minimized: false } : w))
@@ -141,7 +141,7 @@ export class WinBoxManagerService {
     const windowInfo = this.windows().find(w => w.id === id);
     if (windowInfo) {
       windowInfo.instance.hide();
-      windowInfo.minimized = true;
+      windowInfo.instance.minimized = true;
 
       this.windows.update(windows =>
         windows.map(w => (w.id === id ? { ...w, minimized: true } : w))
@@ -154,7 +154,7 @@ export class WinBoxManagerService {
     if (windowInfo) {
       windowInfo.instance.show();
       windowInfo.instance.focus();
-      windowInfo.minimized = false;
+      windowInfo.instance.minimized = false;
 
       this.windows.update(windows =>
         windows.map(w => (w.id === id ? { ...w, minimized: false } : w))
@@ -168,7 +168,7 @@ export class WinBoxManagerService {
       windowInfo.instance.show();
       windowInfo.instance.focus();
       windowInfo.instance.maximize();
-      windowInfo.minimized = false;
+      windowInfo.instance.minimized = false;
 
       this.windows.update(windows =>
         windows.map(w => (w.id === id ? { ...w, minimized: false } : w))
@@ -213,9 +213,7 @@ export class WinBoxManagerService {
       win.instance.hide();
       win.minimized = true;
     });
-    this.windows.update(windowsList =>
-      windowsList.map(w => ({ ...w, minimized: true }))
-    );
+    this.windows.update(windowsList => windowsList.map(w => ({ ...w, minimized: true })));
   }
 
   showAll(): void {
@@ -224,9 +222,7 @@ export class WinBoxManagerService {
       win.instance.show();
       win.minimized = false;
     });
-    this.windows.update(windowsList =>
-      windowsList.map(w => ({ ...w, minimized: false }))
-    );
+    this.windows.update(windowsList => windowsList.map(w => ({ ...w, minimized: false })));
   }
 
   getTopPanelHeight(): number {

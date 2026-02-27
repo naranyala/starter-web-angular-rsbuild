@@ -1,0 +1,38 @@
+<div class="demo-container">
+  <div class="hero-section">
+    <h1>🚀 Technology Explorer</h1>
+    <p class="subtitle">Discover the technologies powering this modern web application</p>
+  </div>
+
+  <div class="search-container">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Type to search... (try: 'angular', 'bun', 'ts')"
+      [(ngModel)]="searchQuery"
+      autofocus
+    />
+    <span class="search-icon">🔍</span>
+    @if (searchQuery) {
+      <button type="button" class="clear-btn" (click)="searchQuery = ''">×</button>
+    }
+  </div>
+
+  <div class="cards-grid">
+    @for (card of filteredCards; track card.title) {
+      <div class="card" (click)="openCard(card)">
+        <div class="card-icon" [style.background]="card.color">
+          {{ card.icon }}
+        </div>
+        <h3 class="card-title">{{ card.title }}</h3>
+        <p class="card-description">{{ card.description }}</p>
+      </div>
+    } @empty {
+      <div class="no-results">
+        <p class="no-results-icon">🔍</p>
+        <p>No results found for "<strong>{{ searchQuery }}</strong>"</p>
+        <p class="no-results-hint">Try a different search term</p>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,38 @@
+.home-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-4) var(--space-10);
+  text-align: center;
+}
+
+.home-container h1 {
+  font-size: var(--text-3xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-10);
+  line-height: 1.75;
+}
+
+.btn {
+  display: inline-block;
+  padding: var(--space-4) var(--space-8);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  text-decoration: none;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  font-size: var(--text-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}

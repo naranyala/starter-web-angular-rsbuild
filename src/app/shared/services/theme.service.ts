@@ -1,62 +1,82 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
+
+export type ThemeName = 'light' | 'dark';
 
 export interface Theme {
-  name: string;
-  primary: string;
-  secondary: string;
-  isDark: boolean;
+  name: ThemeName;
+  label: string;
+  icon: string;
 }
 
 export const THEMES: Theme[] = [
-  { name: 'Light', primary: '#0f3460', secondary: '#e94560', isDark: false },
-  { name: 'Dark', primary: '#16213e', secondary: '#0f3460', isDark: true },
-  { name: 'Ocean', primary: '#0077b6', secondary: '#00b4d8', isDark: false },
-  { name: 'Forest', primary: '#2d6a4f', secondary: '#40916c', isDark: false },
+  { name: 'light', label: 'Light', icon: '☀️' },
+  { name: 'dark', label: 'Dark', icon: '🌙' },
 ];
+
+const STORAGE_KEY = 'app-theme';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  private currentThemeIndex = signal(0);
+  private themeIndex = signal(this.getInitialTheme());
 
-  readonly currentTheme = computed(() => THEMES[this.currentThemeIndex()]);
-  readonly isDarkMode = computed(() => this.currentTheme().isDark);
-  readonly availableThemes = THEMES;
+  readonly currentTheme = computed(() => THEMES[this.themeIndex()]);
+  readonly isDarkMode = computed(() => this.currentTheme().name === 'dark');
+  readonly themeIcon = computed(() => this.currentTheme().icon);
 
-  setTheme(themeName: string): boolean {
-    const index = THEMES.findIndex(t => t.name === themeName);
+  constructor() {
+    effect(() => {
+      const theme = this.currentTheme();
+      this.applyTheme(theme.name);
+    });
+  }
+
+  private getInitialTheme(): number {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'dark') return 1;
+    if (stored === 'light') return 0;
+
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 1 : 0;
+    }
+    return 0;
+  }
+
+  private applyTheme(themeName: ThemeName): void {
+    if (typeof document === 'undefined') return;
+
+    const html = document.documentElement;
+
+    if (themeName === 'dark') {
+      html.setAttribute('data-theme', 'dark');
+      html.classList.add('dark');
+    } else {
+      html.removeAttribute('data-theme');
+      html.classList.remove('dark');
+    }
+
+    localStorage.setItem(STORAGE_KEY, themeName);
+
+    // Update WinBox windows theme
+    this.updateWinBoxTheme();
+  }
+
+  private updateWinBoxTheme(): void {
+    const winBoxManager = (window as any).__winBoxManager;
+    if (winBoxManager?.updateAllWindowsTheme) {
+      winBoxManager.updateAllWindowsTheme();
+    }
+  }
+
+  toggle(): void {
+    this.themeIndex.update(i => (i + 1) % THEMES.length);
+  }
+
+  setTheme(name: ThemeName): void {
+    const index = THEMES.findIndex(t => t.name === name);
     if (index !== -1) {
-      this.currentThemeIndex.set(index);
-      this.applyTheme(THEMES[index]);
-      return true;
+      this.themeIndex.set(index);
     }
-    return false;
-  }
-
-  toggleDarkMode(): void {
-    const currentIndex = this.currentThemeIndex();
-    const currentTheme = THEMES[currentIndex];
-
-    // Find a theme with opposite dark/light mode
-    const targetIndex = THEMES.findIndex(t => t.isDark !== currentTheme.isDark);
-    if (targetIndex !== -1) {
-      this.currentThemeIndex.set(targetIndex);
-      this.applyTheme(THEMES[targetIndex]);
-    }
-  }
-
-  nextTheme(): void {
-    const currentIndex = this.currentThemeIndex();
-    const nextIndex = (currentIndex + 1) % THEMES.length;
-    this.currentThemeIndex.set(nextIndex);
-    this.applyTheme(THEMES[nextIndex]);
-  }
-
-  private applyTheme(theme: Theme): void {
-    const root = document.documentElement;
-    root.style.setProperty('--theme-primary', theme.primary);
-    root.style.setProperty('--theme-secondary', theme.secondary);
-    root.setAttribute('data-theme', theme.name.toLowerCase());
   }
 }
