@@ -6,6 +6,16 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Prism.js CSS (loaded from bundle) -->
+  <style>
+    /* Hide WinBox default minimize bar at bottom only */
+    .winbox-min-bar {
+      display: none !important;
+    }
+    .winbox.min .wb-body::after {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <app-root></app-root>

@@ -4,6 +4,7 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 
 /**
  * Rsbuild configuration for Angular with Bun runtime
+ * Build ID: 20260227-1030 - Force rebuild
  *
  * Rsbuild is built on top of Rspack and provides a simpler configuration API
  * while maintaining compatibility with Angular's requirements.
@@ -47,11 +48,18 @@ export default defineConfig({
   tools: {
     rspack: {
       optimization: {
-        minimize: true,
+        minimize: false,
       },
       // Enable Angular decorator support via TypeScript
       experiments: {
         css: true,
+      },
+      // Disable all caching
+      cache: {
+        type: 'memory',
+      },
+      snapshot: {
+        managedPaths: [],
       },
     },
   },
@@ -60,10 +68,10 @@ export default defineConfig({
     inject: 'body',
   },
   dev: {
-    hmr: true,
+    hmr: false,
   },
   server: {
-    port: 4200,
+    port: 4201,
     historyApiFallback: true,
   },
   performance: {

@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DemoComponent } from './demo/demo.component';
+import { WindowTabsComponent } from './shared/components/window-tabs/window-tabs.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, DemoComponent],
+  imports: [RouterOutlet, DemoComponent, WindowTabsComponent],
   template: `
+    <app-window-tabs></app-window-tabs>
     <app-demo></app-demo>
   `,
   styles: [
@@ -20,3 +22,5 @@ import { DemoComponent } from './demo/demo.component';
   ],
 })
 export class AppComponent {}
+
+// Force refresh

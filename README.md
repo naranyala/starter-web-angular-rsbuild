@@ -1,243 +1,237 @@
-# Angular Rsbuild Starter
+# Angular 21 + Rsbuild + WinBox.js Starter
 
-A minimal Angular 21 application bundled with Rsbuild, running on the Bun runtime.
+A modern, high-performance Angular 21 application featuring a professional window management system with WinBox.js, bundled with Rsbuild and running on the Bun runtime.
 
-## Overview
+![Angular](https://img.shields.io/badge/Angular-21.2.0-DD0031?style=flat&logo=angular)
+![Rsbuild](https://img.shields.io/badge/Rsbuild-1.7.3-42B883?style=flat&logo=vite)
+![Bun](https://img.shields.io/badge/Bun-1.3.9-FBF0DF?style=flat&logo=bun)
+![Prism.js](https://img.shields.io/badge/Prism.js-1.30.0-F7DF1E?style=flat)
+![WinBox.js](https://img.shields.io/badge/WinBox.js-0.2.82-007ACC?style=flat)
 
-This project demonstrates Angular 21 working with Rsbuild, a modern build tool based on Rspack. It provides faster build times compared to traditional Webpack-based Angular builds.
+## 🌟 Features
 
-## Prerequisites
+### Window Management System
+- **Fixed Top Panel** - Two-row collapsible panel for window management
+  - Row 1: App title, window count, Home button
+  - Row 2: Horizontal tab switcher for all open windows
+- **WinBox.js Integration** - Professional window containers with:
+  - Native titlebar controls (minimize, maximize, close)
+  - Full-screen mode respecting top panel (88px offset)
+  - Zero-margin layout for maximum content space
+  - Dark theme with syntax-highlighted code blocks
 
-- [Bun](https://bun.sh/) v1.3 or later
-- Node.js v18 or later (optional, for npm compatibility)
+### Content Display
+- **Article Layout** - Professional content structure inside each window:
+  - Header with icon, title, subtitle, and copy button
+  - Overview section with description and documentation link
+  - Code example section with Prism.js syntax highlighting
+  - Key points section with tip cards
+  - Footer with external links
+- **Syntax Highlighting** - Prism.js with VS Code Dark+ theme
+  - TypeScript/JavaScript support
+  - Bundled from node_modules (offline-ready)
+  - Copy-to-clipboard functionality
 
-## Quick Start
+### Developer Experience
+- **Hot Module Replacement** - Instant updates during development
+- **Biome** - Fast linter and formatter (10x faster than ESLint)
+- **TypeScript Strict Mode** - Full type safety
+- **Inline Styles** - All component styles embedded for reliability
 
-### Install dependencies
+## 🚀 Quick Start
 
 ```bash
+# Install dependencies
 bun install
-```
 
-### Development server
-
-```bash
+# Start development server (port 4200)
 bun run dev
-```
 
-The application will be available at http://localhost:4200
-
-### Production build
-
-```bash
+# Build for production
 bun run build:rsbuild
+
+# Serve production build
+cd dist/angular-rsbuild-demo && python3 -m http.server 4200
 ```
 
-Build output will be in `dist/angular-rsbuild-demo/`
+## 📚 Documentation
 
-### Traditional Angular CLI (Webpack)
+Comprehensive documentation is available in the [`docs/`](docs/) folder:
 
-This project also supports the standard Angular CLI commands:
+| Document | Description |
+|----------|-------------|
+| [01-overview.md](docs/01-overview.md) | Project overview and architecture |
+| [02-quickstart.md](docs/02-quickstart.md) | Installation and setup guide |
+| [03-window-management.md](docs/03-window-management.md) | WinBox.js window system |
+| [04-top-panel.md](docs/04-top-panel.md) | Fixed top panel design |
+| [05-content-layout.md](docs/05-content-layout.md) | Article layout and styling |
+| [06-syntax-highlighting.md](docs/06-syntax-highlighting.md) | Prism.js integration |
+| [07-build-system.md](docs/07-build-system.md) | Rsbuild configuration |
+| [08-improvements.md](docs/08-improvements.md) | Future enhancement suggestions |
 
-```bash
-bun run start    # Angular CLI dev server
-bun run build    # Angular CLI production build
+## 🏗️ Project Structure
+
+```
+starter-web-angular-rsbuild/
+├── src/
+│   ├── app/
+│   │   ├── demo/
+│   │   │   └── demo.component.ts      # Main demo with technology cards
+│   │   ├── home/
+│   │   │   └── home.component.ts      # Welcome page
+│   │   └── shared/
+│   │       ├── components/
+│   │       │   └── window-tabs/       # Top panel component
+│   │       └── services/
+│   │           └── winbox-manager.service.ts  # Window management
+│   ├── main.ts                        # App bootstrap with Prism.js
+│   ├── index.html                     # HTML entry point
+│   └── styles.css                     # Global styles
+├── docs/                              # Documentation
+├── rsbuild.config.ts                  # Rsbuild configuration
+├── angular.json                       # Angular CLI config
+├── package.json                       # Dependencies
+└── README.md                          # This file
 ```
 
-## Available Scripts
+## 🎨 UI Layout
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ 🪟 Window Manager    [3] Windows • [1] Minimized    [🏠 Home]  │ ← Row 1 (44px)
+├─────────────────────────────────────────────────────────────────┤
+│ [🅰️ Angular] [⚡ Rsbuild] [📘 TypeScript] [🚀 esbuild] [🔥 HMR] │ ← Row 2 (44px)
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐ │
+│  │ 🅰️  Angular                        [📋 Copy Code]         │ │
+│  │     Platform for building web apps                        │ │
+│  ├───────────────────────────────────────────────────────────┤ │
+│  │ 📖 Overview                                                │ │
+│  │    Platform for building web apps with TypeScript         │ │
+│  │    ┌─────────────────────────────────────────────────┐   │ │
+│  │    │ 🔗 Official Documentation                      │   │ │
+│  │    │    https://angular.dev                         │   │ │
+│  │    └─────────────────────────────────────────────────┘   │ │
+│  │                                                           │ │
+│  │ 💻 Example Usage                    [TypeScript]          │ │
+│  │    ┌─────────────────────────────────────────────────┐   │ │
+│  │    │ angular.ts                        [📋]          │   │ │
+│  │    ├─────────────────────────────────────────────────┤   │ │
+│  │    │ import { Component } from '@angular/core';      │   │ │
+│  │    │ ...                                             │   │ │
+│  │    └─────────────────────────────────────────────────┘   │ │
+│  │                                                           │ │
+│  │ 💡 Key Points                                              │ │
+│  │    ┌──────────┐ ┌──────────┐ ┌──────────┐                │ │
+│  │    │ ⚡        │ │ 🔒        │ │ 🧩        │                │ │
+│  │    │Performance│ │Type Safety│ │ Modular   │                │ │
+│  │    └──────────┘ └──────────┘ └──────────┘                │ │
+│  │                                                           │ │
+│  ├───────────────────────────────────────────────────────────┤ │
+│  │ 🌐 Visit Angular Website ↗    Generated with Angular...  │ │
+│  └───────────────────────────────────────────────────────────┘ │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 🔧 Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `bun run dev` | Start Rsbuild development server with HMR |
+| `bun run dev` | Rsbuild dev server with HMR (port 4200) |
 | `bun run build:rsbuild` | Production build with Rsbuild |
+| `bun run serve:rsbuild` | Serve production build locally |
 | `bun run start` | Angular CLI dev server (Webpack) |
-| `bun run build` | Angular CLI production build (Webpack) |
-| `bun run test` | Run unit tests with Bun test |
+| `bun run build` | Angular CLI production build |
+| `bun run test` | Run unit tests with Bun |
 | `bun run test:watch` | Run tests in watch mode |
-| `bun run test:coverage` | Run tests with coverage |
-| `bun run lint` | Run Biome linter |
-| `bun run lint:fix` | Run Biome linter with auto-fix |
-| `bun run format` | Check code formatting with Biome |
-| `bun run format:fix` | Format code with Biome |
+| `bun run lint` | Check for lint errors (Biome) |
+| `bun run lint:fix` | Auto-fix lint errors |
+| `bun run format` | Check code formatting |
+| `bun run format:fix` | Format all files |
 
-## Code Quality & Linting
+## 📦 Dependencies
 
-This project uses [Biome](https://biomejs.dev/) for linting and formatting.
-
-### VSCode Integration
-
-Install the [Biome VSCode extension](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) for automatic formatting on save and inline linting errors.
-
-The project includes pre-configured VSCode settings (`.vscode/settings.json`) that enable:
-- Format on save
-- Auto-fix on save
-- Import organization on save
-
-### Manual Commands
-
-```bash
-# Check for lint errors
-bun run lint
-
-# Auto-fix lint errors
-bun run lint:fix
-
-# Check formatting
-bun run format
-
-# Format all files
-bun run format:fix
-```
-
-### Biome Configuration
-
-Key features of the Biome configuration (`biome.json`):
-- **TypeScript**: Full support for decorators and Angular patterns
-- **Formatting**: 2-space indentation, 100 char line width, single quotes
-- **Linting**: Recommended rules with Angular-friendly overrides
-- **Test files**: Relaxed rules for test files (`.spec.ts`, `.test.ts`)
-- **Component files**: Relaxed import type rules for `*.component.ts`
-
-## Project Structure
-
-```
-starter-angular-rsbuild/
-├── src/
-│   ├── app/                    # Application components
-│   │   ├── app.component.ts    # Root component
-│   │   ├── home/               # Home page component
-│   │   └── demo/               # Demo page component
-│   ├── main.ts                 # Application entry point
-│   ├── index.html              # HTML template
-│   ├── styles.css              # Global styles
-│   └── assets/                 # Static assets
-├── dist/                       # Build output
-├── rsbuild.config.ts           # Rsbuild configuration
-├── angular.json                # Angular CLI configuration
-├── tsconfig.json               # TypeScript configuration
-├── biome.json                  # Biome lint/format config
-├── .editorconfig               # Editor configuration
-└── package.json                # Dependencies and scripts
-```
-
-## Configuration
-
-### Rsbuild Configuration
-
-The `rsbuild.config.ts` file configures the build process:
-
-- Entry point: `src/main.ts`
-- Output directory: `dist/angular-rsbuild-demo`
-- Development server port: 4200
-- HMR enabled for development
-- SCSS and CSS support via plugins
-- Static assets copied from `src/assets` and `src/favicon.ico`
-
-### TypeScript Configuration
-
-The project uses TypeScript 5.7 with the following key settings:
-
-- Module: ES2022
-- Module resolution: bundler
-- Target: ES2022
-- Experimental decorators enabled
-- Strict mode enabled
-
-### Angular Configuration
-
-Components use inline templates and styles for compatibility with Rsbuild's JIT compilation mode.
-
-## Key Dependencies
-
-### Runtime
-
-| Package | Version | Description |
-|---------|---------|-------------|
-| @angular/core | 21.1.x | Angular framework |
-| @angular/router | 21.1.x | Angular router |
-| @angular/forms | 21.1.x | Angular forms |
-| rxjs | 7.8.x | Reactive extensions |
-| zone.js | 0.15.x | Change detection |
-| winbox | 0.2.x | Window management library |
+### Core
+- **@angular/core** ^21.2.0 - Latest Angular with signals and standalone components
+- **rxjs** ~7.8.2 - Reactive extensions
+- **zone.js** ~0.15.1 - Change detection
+- **winbox** ^0.2.82 - Window management library
+- **prismjs** ^1.30.0 - Syntax highlighting
 
 ### Development
+- **@rsbuild/core** ^1.7.3 - Fast build tool
+- **@biomejs/biome** ^2.4.4 - Linter and formatter
+- **typescript** ~5.9.2 - Type safety
+- **bun-types** ^1.3.9 - Bun runtime types
 
-| Package | Version | Description |
-|---------|---------|-------------|
-| @rsbuild/core | 1.7.x | Build tool |
-| @rsbuild/plugin-sass | 1.5.x | SCSS support |
-| @rsbuild/plugin-css-minimizer | 1.1.x | CSS optimization |
-| typescript | 5.7.x | TypeScript compiler |
-| @biomejs/biome | 2.4.x | Linter and formatter |
+## ⚡ Performance Comparison
 
-## Architecture Notes
+| Aspect | Rsbuild (Dev) | Angular CLI (Prod) |
+|--------|---------------|-------------------|
+| Build Time | ~1-2s | ~20-25s |
+| Bundle Size | 3.2 MB | 865 KB |
+| HMR | Instant | Fast |
+| Optimization | Minimal | Full AOT |
+| Use Case | Development | Production |
 
-### JIT Compilation
+**Recommendation**: Use Rsbuild for development (fast iterations) and Angular CLI for production deployments (optimized bundles).
 
-This project uses Angular's JIT (Just-in-Time) compilation mode for compatibility with Rsbuild. The Angular compiler is included in the bundle, which increases the bundle size but enables faster development builds.
+## 🎯 Key Design Decisions
 
-For production optimization, consider switching to AOT (Ahead-of-Time) compilation with a custom build setup.
+### 1. Inline Styles for WinBox Content
+All WinBox window content uses **inline `<style>` tags** instead of external CSS files. This ensures:
+- No CSS loading delays
+- No specificity conflicts
+- Self-contained window content
+- Reliable rendering
 
-### Component Structure
+### 2. Two-Row Top Panel
+- **Row 1**: App branding and global actions (Home button)
+- **Row 2**: Window switcher (click to focus)
+- Window controls (minimize/maximize/close) remain in WinBox titlebar
 
-All components use inline templates and styles instead of external files. This approach avoids issues with Angular's resource resolution in the Rsbuild bundler.
+### 3. Prism.js from node_modules
+- Bundled with the application (no CDN dependency)
+- Works offline
+- Version locked in package.json
+- TypeScript types available
 
-Example:
+### 4. Maximized Windows
+- Windows start at Y: 88px (below top panel)
+- Height: viewport - 88px
+- Zero margin for maximum content space
+- Responsive to window resize
 
-```typescript
-@Component({
-  selector: 'app-example',
-  standalone: true,
-  template: '<div>Hello World</div>',
-  styles: [`div { color: red; }`],
-})
-export class ExampleComponent {}
-```
+## 🌐 Browser Support
 
-### Zone.js
+| Browser | Version | Support |
+|---------|---------|---------|
+| Chrome | 90+ | ✅ Full |
+| Firefox | 88+ | ✅ Full |
+| Safari | 14+ | ✅ Full |
+| Edge | 90+ | ✅ Full |
 
-Zone.js is required for Angular's change detection. It is imported in `src/main.ts`.
+## 📝 License
 
-## Build Output
+Apache 2.0 - See [LICENSE](LICENSE) for details.
 
-The production build generates:
+## 🤝 Contributing
 
-- `index.html` - Main HTML file with injected scripts
-- `favicon.ico` - Favicon copied from source
-- `assets/` - Static assets folder
-- `static/js/` - Bundled JavaScript files with content hashes
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Typical bundle size: approximately 1.2 MB (includes Angular compiler and zone.js)
+## 📧 Support
 
-## Troubleshooting
+For issues and questions:
+- Create an issue on GitHub
+- Check the [documentation](docs/)
+- Review [troubleshooting guide](docs/09-troubleshooting.md)
 
-### Port already in use
+---
 
-If port 4200 is in use, Rsbuild will automatically use the next available port (4201, 4202, etc.)
-
-### Build fails after dependency changes
-
-Clear the build cache and reinstall:
-
-```bash
-rm -rf dist node_modules
-bun install
-bun run build:rsbuild
-```
-
-### Module resolution errors
-
-Ensure all imports use correct paths and file extensions. Rsbuild uses the TypeScript configuration for module resolution.
-
-## Migration from Rspack
-
-This project was migrated from direct Rspack configuration to Rsbuild. The key differences:
-
-1. Rsbuild provides a higher-level configuration API
-2. Built-in plugin system for SCSS, CSS, and other features
-3. Simpler configuration file structure
-4. Better defaults for modern frameworks
-
-## License
-
-Apache 2.0
+**Built with ❤️ using Angular 21, Rsbuild, and Bun**

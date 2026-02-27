@@ -9,15 +9,15 @@ import { RouterLink } from '@angular/router';
     <div class="home-container">
       <h1>Angular Rsbuild Demo</h1>
       <p class="subtitle">A minimal Angular 21 application bundled with Rsbuild</p>
-      <a routerLink="/demo" class="btn">View Accordion Demo →</a>
+      <a routerLink="/demo" class="btn">View Demo →</a>
     </div>
   `,
   styles: [
     `
     .home-container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 80px 20px 40px;
       text-align: center;
     }
 
@@ -25,26 +25,32 @@ import { RouterLink } from '@angular/router';
       font-size: 2.5rem;
       color: #1a1a2e;
       margin-bottom: 16px;
+      font-weight: 700;
     }
 
     .subtitle {
       font-size: 1.2rem;
       color: #666;
-      margin-bottom: 32px;
+      margin-bottom: 40px;
+      line-height: 1.6;
     }
 
     .btn {
       display: inline-block;
-      padding: 12px 24px;
-      background: #0f3460;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
       color: white;
       text-decoration: none;
-      border-radius: 6px;
-      transition: background 0.2s;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(15, 52, 96, 0.2);
     }
 
     .btn:hover {
-      background: #16213e;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(15, 52, 96, 0.3);
     }
   `,
   ],
