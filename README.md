@@ -1,97 +1,240 @@
-# Angular 21 + Rsbuild + WinBox.js Starter
+# Starter Web: Angular + Rsbuild & Hono.js + Drizzle
 
-A modern, high-performance Angular 21 application featuring a professional window management system with WinBox.js, bundled with Rsbuild and running on the Bun runtime.
+A modern full-stack web application starter combining **Angular 21** with **Rsbuild** for the frontend, and **Hono.js** with **Drizzle ORM** for the backend, all running on the **Bun** runtime.
 
 ![Angular](https://img.shields.io/badge/Angular-21.2.0-DD0031?style=flat&logo=angular)
-![Rsbuild](https://img.shields.io/badge/Rsbuild-1.7.3-42B883?style=flat&logo=vite)
+![Rsbuild](https://img.shields.io/badge/Rsbuild-1.7.3-42B883?style=flat)
+![Hono](https://img.shields.io/badge/Hono-4.12.3-E36002?style=flat&logo=hono)
+![Drizzle](https://img.shields.io/badge/Drizzle-0.45.1-C5F74F?style=flat&logo=drizzle)
 ![Bun](https://img.shields.io/badge/Bun-1.3.9-FBF0DF?style=flat&logo=bun)
-![Prism.js](https://img.shields.io/badge/Prism.js-1.30.0-F7DF1E?style=flat)
-![WinBox.js](https://img.shields.io/badge/WinBox.js-0.2.82-007ACC?style=flat)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=flat&logo=typescript)
 
 ## 🌟 Features
 
-### Window Management System
-- **Fixed Top Panel** - Two-row collapsible panel for window management
-  - Row 1: App title, window count, Home button
-  - Row 2: Horizontal tab switcher for all open windows
-- **WinBox.js Integration** - Professional window containers with:
-  - Native titlebar controls (minimize, maximize, close)
-  - Full-screen mode respecting top panel (88px offset)
-  - Zero-margin layout for maximum content space
-  - Dark theme with syntax-highlighted code blocks
+### Frontend (Angular + Rsbuild)
+- ⚡ **Rsbuild** - Lightning-fast build tool with HMR (~1-2s builds)
+- 🪟 **WinBox.js Window System** - Professional window management with draggable, resizable windows
+- 🎨 **Fixed Top Panel** - Two-row collapsible panel for window switching and app controls
+- 📝 **Prism.js Syntax Highlighting** - VS Code Dark+ theme for code blocks
+- 🧪 **Biome** - 10x faster linting and formatting (ESLint alternative)
+- 📦 **Standalone Components** - Modern Angular architecture with signals
 
-### Content Display
-- **Article Layout** - Professional content structure inside each window:
-  - Header with icon, title, subtitle, and copy button
-  - Overview section with description and documentation link
-  - Code example section with Prism.js syntax highlighting
-  - Key points section with tip cards
-  - Footer with external links
-- **Syntax Highlighting** - Prism.js with VS Code Dark+ theme
-  - TypeScript/JavaScript support
-  - Bundled from node_modules (offline-ready)
-  - Copy-to-clipboard functionality
+### Backend (Hono.js + Drizzle)
+- 🚀 **Hono.js** - Ultra-fast, lightweight REST API framework
+- 🗄️ **Drizzle ORM** - Type-safe database operations with SQLite
+- 🏗️ **Clean Architecture** - Controllers → Services → Repositories pattern
+- 💉 **Dependency Injection** - Modular, testable service container
+- 🔥 **Hot Reload** - Instant server restarts with `bun run --hot`
+- 📜 **Database Migrations** - Schema versioning with Drizzle Kit
 
-### Developer Experience
-- **Hot Module Replacement** - Instant updates during development
-- **Biome** - Fast linter and formatter (10x faster than ESLint)
-- **TypeScript Strict Mode** - Full type safety
-- **Inline Styles** - All component styles embedded for reliability
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         Frontend (Port 4200)                    │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Angular 21 + Rsbuild                                     │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐   │  │
+│  │  │   Home      │  │   Demo      │  │  Window System  │   │  │
+│  │  │ Component   │  │ Component   │  │  (WinBox.js)    │   │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────────┘   │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ HTTP/REST API
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         Backend (Port 3000)                     │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Hono.js + Drizzle ORM                                    │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │  │
+│  │  │ Controllers│─▶│ Services │─▶│Repos     │─▶│  SQLite  │  │  │
+│  │  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │  │
+│  │       ▲                                              │     │  │
+│  │       └────────── DI Container ──────────────────────┘     │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 📁 Project Structure
+
+```
+starter-web-angular-rsbuild/
+├── frontend/                    # Angular 21 + Rsbuild application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── demo/           # Demo component with technology cards
+│   │   │   ├── home/           # Welcome page
+│   │   │   └── shared/         # Shared components & services
+│   │   │       ├── components/
+│   │   │       │   └── window-tabs/   # Top panel window manager
+│   │   │       └── services/
+│   │   │           └── winbox-manager.service.ts
+│   │   ├── main.ts             # App bootstrap with Prism.js
+│   │   ├── index.html          # HTML entry point
+│   │   └── styles.css          # Global styles
+│   ├── docs/                   # Frontend documentation
+│   ├── rsbuild.config.ts       # Rsbuild configuration
+│   ├── angular.json            # Angular CLI config
+│   ├── biome.json              # Biome linter config
+│   └── package.json
+│
+├── backend/                    # Hono.js + Drizzle API server
+│   ├── src/
+│   │   ├── container/          # Dependency Injection
+│   │   │   ├── container.ts    # DI container implementation
+│   │   │   └── di-container.ts # Service bindings
+│   │   ├── controllers/        # HTTP request handlers
+│   │   ├── services/           # Business logic layer
+│   │   ├── repositories/       # Data access layer
+│   │   ├── routes/             # Route definitions
+│   │   ├── db/                 # Database configuration
+│   │   │   ├── index.ts        # DB connection & types
+│   │   │   └── schema.ts       # Drizzle schema
+│   │   └── types/              # TypeScript types
+│   ├── drizzle/                # Migration files
+│   ├── drizzle.config.ts       # Drizzle Kit config
+│   ├── index.ts                # Server entry point
+│   └── package.json
+│
+├── README.md                   # This file
+└── .gitignore
+```
 
 ## 🚀 Quick Start
 
+### Prerequisites
+
+- [Bun](https://bun.sh/) >= 1.3.9
+- Node.js >= 20 (optional, Bun includes Node-compatible runtime)
+
+### Installation
+
 ```bash
-# Install dependencies
+# Install frontend dependencies
+cd frontend
 bun install
 
-# Start development server (port 4200)
-bun run dev
+# Install backend dependencies
+cd ../backend
+bun install
+```
 
-# Build for production
+### Running the Application
+
+#### Terminal 1: Start Backend
+
+```bash
+cd backend
+bun run dev
+```
+
+Backend runs on `http://localhost:3000`
+
+#### Terminal 2: Start Frontend
+
+```bash
+cd frontend
+bun run dev
+```
+
+Frontend runs on `http://localhost:4200`
+
+### Production Build
+
+```bash
+# Build frontend for production
+cd frontend
 bun run build:rsbuild
 
 # Serve production build
-cd dist/angular-rsbuild-demo && python3 -m http.server 4200
+cd dist/angular-rspack-demo
+python3 -m http.server 4200
+
+# Start backend in production mode
+cd backend
+bun run start
 ```
 
 ## 📚 Documentation
 
-Comprehensive documentation is available in the [`docs/`](docs/) folder:
+### Frontend Documentation
+Detailed documentation is available in [`frontend/docs/`](frontend/docs/):
 
 | Document | Description |
 |----------|-------------|
-| [01-overview.md](docs/01-overview.md) | Project overview and architecture |
-| [02-quickstart.md](docs/02-quickstart.md) | Installation and setup guide |
-| [03-window-management.md](docs/03-window-management.md) | WinBox.js window system |
-| [04-top-panel.md](docs/04-top-panel.md) | Fixed top panel design |
-| [05-content-layout.md](docs/05-content-layout.md) | Article layout and styling |
-| [06-syntax-highlighting.md](docs/06-syntax-highlighting.md) | Prism.js integration |
-| [07-build-system.md](docs/07-build-system.md) | Rsbuild configuration |
-| [08-improvements.md](docs/08-improvements.md) | Future enhancement suggestions |
+| [01-overview.md](frontend/docs/01-overview.md) | Project overview and architecture |
+| [02-quickstart.md](frontend/docs/02-quickstart.md) | Installation and setup guide |
+| [03-window-management.md](frontend/docs/03-window-management.md) | WinBox.js window system |
+| [04-top-panel.md](frontend/docs/04-top-panel.md) | Fixed top panel design |
+| [05-content-layout.md](frontend/docs/05-content-layout.md) | Article layout and styling |
+| [06-syntax-highlighting.md](frontend/docs/06-syntax-highlighting.md) | Prism.js integration |
+| [07-build-system.md](frontend/docs/07-build-system.md) | Rsbuild configuration |
+| [08-improvements.md](frontend/docs/08-improvements.md) | Future enhancements |
 
-## 🏗️ Project Structure
+### Backend Documentation
+See [`backend/README.md`](backend/README.md) for detailed backend documentation.
 
-```
-starter-web-angular-rsbuild/
-├── src/
-│   ├── app/
-│   │   ├── demo/
-│   │   │   └── demo.component.ts      # Main demo with technology cards
-│   │   ├── home/
-│   │   │   └── home.component.ts      # Welcome page
-│   │   └── shared/
-│   │       ├── components/
-│   │       │   └── window-tabs/       # Top panel component
-│   │       └── services/
-│   │           └── winbox-manager.service.ts  # Window management
-│   ├── main.ts                        # App bootstrap with Prism.js
-│   ├── index.html                     # HTML entry point
-│   └── styles.css                     # Global styles
-├── docs/                              # Documentation
-├── rsbuild.config.ts                  # Rsbuild configuration
-├── angular.json                       # Angular CLI config
-├── package.json                       # Dependencies
-└── README.md                          # This file
+## 🔧 Available Commands
+
+### Frontend
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Rsbuild dev server with HMR (port 4200) |
+| `bun run build:rsbuild` | Production build with Rsbuild |
+| `bun run serve:rsbuild` | Serve production build locally |
+| `bun run start` | Angular CLI dev server (Webpack) |
+| `bun run build` | Angular CLI production build |
+| `bun run test` | Run unit tests with Bun |
+| `bun run test:watch` | Run tests in watch mode |
+| `bun run lint` | Check for lint errors (Biome) |
+| `bun run lint:fix` | Auto-fix lint errors |
+| `bun run format` | Check code formatting |
+| `bun run format:fix` | Format all files |
+
+### Backend
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start dev server with hot reload (port 3000) |
+| `bun run start` | Start production server |
+| `bun run db:generate` | Generate migrations after schema changes |
+| `bun run db:migrate` | Apply migrations to database |
+| `bun run db:studio` | Open Drizzle Studio (database GUI) |
+
+## 🌐 API Endpoints
+
+| Method | Endpoint        | Description       |
+|--------|-----------------|-------------------|
+| GET    | `/`             | Health check      |
+| GET    | `/api/users`    | List all users    |
+| GET    | `/api/users/:id`| Get user by ID    |
+| POST   | `/api/users`    | Create user       |
+| PUT    | `/api/users/:id`| Update user       |
+| DELETE | `/api/users/:id`| Delete user       |
+
+### Example API Requests
+
+```bash
+# Create a user
+curl -X POST http://localhost:3000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "email": "john@example.com"}'
+
+# Get all users
+curl http://localhost:3000/api/users
+
+# Get user by ID
+curl http://localhost:3000/api/users/1
+
+# Update user
+curl -X PUT http://localhost:3000/api/users/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Updated"}'
+
+# Delete user
+curl -X DELETE http://localhost:3000/api/users/1
 ```
 
 ## 🎨 UI Layout
@@ -108,7 +251,6 @@ starter-web-angular-rsbuild/
 │  │     Platform for building web apps                        │ │
 │  ├───────────────────────────────────────────────────────────┤ │
 │  │ 📖 Overview                                                │ │
-│  │    Platform for building web apps with TypeScript         │ │
 │  │    ┌─────────────────────────────────────────────────┐   │ │
 │  │    │ 🔗 Official Documentation                      │   │ │
 │  │    │    https://angular.dev                         │   │ │
@@ -116,8 +258,6 @@ starter-web-angular-rsbuild/
 │  │                                                           │ │
 │  │ 💻 Example Usage                    [TypeScript]          │ │
 │  │    ┌─────────────────────────────────────────────────┐   │ │
-│  │    │ angular.ts                        [📋]          │   │ │
-│  │    ├─────────────────────────────────────────────────┤   │ │
 │  │    │ import { Component } from '@angular/core';      │   │ │
 │  │    │ ...                                             │   │ │
 │  │    └─────────────────────────────────────────────────┘   │ │
@@ -127,46 +267,13 @@ starter-web-angular-rsbuild/
 │  │    │ ⚡        │ │ 🔒        │ │ 🧩        │                │ │
 │  │    │Performance│ │Type Safety│ │ Modular   │                │ │
 │  │    └──────────┘ └──────────┘ └──────────┘                │ │
-│  │                                                           │ │
-│  ├───────────────────────────────────────────────────────────┤ │
-│  │ 🌐 Visit Angular Website ↗    Generated with Angular...  │ │
 │  └───────────────────────────────────────────────────────────┘ │
-│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## 🔧 Available Scripts
-
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | Rsbuild dev server with HMR (port 4200) |
-| `bun run build:rsbuild` | Production build with Rsbuild |
-| `bun run serve:rsbuild` | Serve production build locally |
-| `bun run start` | Angular CLI dev server (Webpack) |
-| `bun run build` | Angular CLI production build |
-| `bun run test` | Run unit tests with Bun |
-| `bun run test:watch` | Run tests in watch mode |
-| `bun run lint` | Check for lint errors (Biome) |
-| `bun run lint:fix` | Auto-fix lint errors |
-| `bun run format` | Check code formatting |
-| `bun run format:fix` | Format all files |
-
-## 📦 Dependencies
-
-### Core
-- **@angular/core** ^21.2.0 - Latest Angular with signals and standalone components
-- **rxjs** ~7.8.2 - Reactive extensions
-- **zone.js** ~0.15.1 - Change detection
-- **winbox** ^0.2.82 - Window management library
-- **prismjs** ^1.30.0 - Syntax highlighting
-
-### Development
-- **@rsbuild/core** ^1.7.3 - Fast build tool
-- **@biomejs/biome** ^2.4.4 - Linter and formatter
-- **typescript** ~5.9.2 - Type safety
-- **bun-types** ^1.3.9 - Bun runtime types
-
 ## ⚡ Performance Comparison
+
+### Frontend Build Tools
 
 | Aspect | Rsbuild (Dev) | Angular CLI (Prod) |
 |--------|---------------|-------------------|
@@ -178,31 +285,47 @@ starter-web-angular-rsbuild/
 
 **Recommendation**: Use Rsbuild for development (fast iterations) and Angular CLI for production deployments (optimized bundles).
 
-## 🎯 Key Design Decisions
+## 🛠️ Adding New Features
 
-### 1. Inline Styles for WinBox Content
-All WinBox window content uses **inline `<style>` tags** instead of external CSS files. This ensures:
-- No CSS loading delays
-- No specificity conflicts
-- Self-contained window content
-- Reliable rendering
+### Backend: New Feature Template
 
-### 2. Two-Row Top Panel
-- **Row 1**: App branding and global actions (Home button)
-- **Row 2**: Window switcher (click to focus)
-- Window controls (minimize/maximize/close) remain in WinBox titlebar
+1. **Create Schema** (`backend/src/db/schema.ts`)
+2. **Create Repository** (`backend/src/repositories/`)
+3. **Create Service** (`backend/src/services/`)
+4. **Create Controller** (`backend/src/controllers/`)
+5. **Register in DI Container** (`backend/src/container/di-container.ts`)
+6. **Add Routes** (`backend/src/routes/`)
+7. **Wire in App** (`backend/src/app.ts`)
 
-### 3. Prism.js from node_modules
-- Bundled with the application (no CDN dependency)
-- Works offline
-- Version locked in package.json
-- TypeScript types available
+See [backend/README.md](backend/README.md) for detailed examples.
 
-### 4. Maximized Windows
-- Windows start at Y: 88px (below top panel)
-- Height: viewport - 88px
-- Zero margin for maximum content space
-- Responsive to window resize
+### Frontend: New Component
+
+1. **Generate Component** (or create manually in `frontend/src/app/`)
+2. **Add to Routes** (if needed)
+3. **Register in Window System** (for WinBox.js integration)
+4. **Add Styles** (inline or global)
+
+See [frontend/docs/](frontend/docs/) for detailed examples.
+
+## 📦 Dependencies
+
+### Frontend Core
+- **@angular/core** ^21.2.0
+- **rxjs** ~7.8.2
+- **zone.js** ~0.15.1
+- **winbox** ^0.2.82
+- **prismjs** ^1.30.0
+
+### Frontend Dev
+- **@rsbuild/core** ^1.7.3
+- **@biomejs/biome** ^2.4.4
+- **typescript** ~5.9.2
+
+### Backend Core
+- **hono** ^4.12.3
+- **drizzle-orm** ^0.45.1
+- **drizzle-kit** ^0.31.9
 
 ## 🌐 Browser Support
 
@@ -213,10 +336,6 @@ All WinBox window content uses **inline `<style>` tags** instead of external CSS
 | Safari | 14+ | ✅ Full |
 | Edge | 90+ | ✅ Full |
 
-## 📝 License
-
-Apache 2.0 - See [LICENSE](LICENSE) for details.
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -225,13 +344,17 @@ Apache 2.0 - See [LICENSE](LICENSE) for details.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## 📝 License
+
+Apache 2.0 - See [LICENSE](LICENSE) for details.
+
 ## 📧 Support
 
 For issues and questions:
 - Create an issue on GitHub
-- Check the [documentation](docs/)
-- Review [troubleshooting guide](docs/09-troubleshooting.md)
+- Check the [frontend documentation](frontend/docs/)
+- Review [backend README](backend/README.md)
 
 ---
 
-**Built with ❤️ using Angular 21, Rsbuild, and Bun**
+**Built with ❤️ using Angular 21, Rsbuild, Hono.js, Drizzle ORM, and Bun**
